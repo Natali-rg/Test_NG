@@ -1,0 +1,11 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+<suite name="Suite">
+    <test name="Regression1">
+        <groups>
+            <define name="smoke"/>
+        </groups>
+        <classes>
+            <class name="TestTestNG"/>
+        </classes>
+    </test>
+</suite>
