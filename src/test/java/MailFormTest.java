@@ -9,6 +9,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.runners.Parameterized;
 import org.openqa.selenium.WebDriver;
+import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -22,16 +23,6 @@ public class MailFormTest extends Base {
     WebDriver driver;
     MailForm form;
     MainPage mainPage;
-    Users users;
-
-//    @Parameterized.Parameters
-//    public static Collection options() {
-//        return Arrays.asList(Users.values());
-//    }
-//
-//    public MailFormTest(Users users){
-//        this.users=users;
-//    }
 
 
     @BeforeClass
@@ -47,23 +38,37 @@ public class MailFormTest extends Base {
         }
     }
 
-    @AfterClass
-    public void ass() throws InterruptedException {
-        Thread.sleep(5000);
+    @After
+    public void waitT() throws InterruptedException {
+        Thread.sleep(3000);
     }
+
+    @AfterClass
+    public void ass() {
+        driver.close();
+    }
+
+
 
     @Test(description = "open page", priority = 0)
     public void openPage(){
         driver.get("https://ithillel.ua/");
+        Assert.assertEquals(driver.getTitle(),"Комп'ютерна школа Hillel у Києві: Курси IT-технологій");
+
     }
     @Test(description = "click button consultation",dependsOnMethods = "openPage",priority = 1)
     public void clickFormButton(){
-        mainPage.clickConsultButton();
+        if(MainPage.element.isEnabled()) {
+            mainPage.clickConsultButton();
+        }else {
+            System.out.println("The button not found");
+        }
     }
 
     @Test( dataProvider = "sendDataToForm", dataProviderClass = DataProv.class, priority = 2)
     public void testForm(String name, String mail, String tel, String mass, String course) {
-       // ResourceBundle bundle=ResourceBundle.getBundle(users.getCode());
+        driver.get("https://ithillel.ua/");
+        mainPage.clickConsultButton();
         form.create(name,mail,tel,mass,course, "ldklkkvjdl");
     }
 
